@@ -10,7 +10,7 @@ import math
 import cmath
 import decimal as decimals
 import fractions
-import random
+import random as randoms
 import statistics
 
 from numbers import *
@@ -32,7 +32,8 @@ nani=nanj
 
 for k, v in list(globals().items()):
     if not "__" in k and not k.isupper() and not k.islower():
-        globals()[k.lower()] = v
+        if not k.lower() in globals():
+            globals()[k.lower()] = v
 
 for n in dir(math):
     if "__" in n:
