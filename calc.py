@@ -5,6 +5,14 @@ import re
 import readline
 import types
 
+import numbers
+import math
+import cmath
+import decimal
+import fractions
+import random
+import statistics
+
 from numbers import *
 from math import *
 from cmath import *
@@ -17,6 +25,12 @@ false=False
 true=True
 none=None
 null=None
+
+for n in dir(math):
+    if "__" in n:
+        continue
+    elif n in dir(cmath) and isinstance(getattr(math, n), types.BuiltinFunctionType):
+        globals()[n] = lambda *x, n=n: (lambda r=getattr(cmath, n)(*x): r.real if r.imag == 0 else r)()
 
 try:
     while True:
@@ -50,7 +64,7 @@ try:
                     continue
 
                 if isinstance(res, float):
-                    if res != floor(res):
+                    if isnan(res) or isinf(res) or res != floor(res):
                         print("float: {0:f}".format(res))
                         continue
                     else:
@@ -81,8 +95,8 @@ try:
                 print("error: {0}".format(err))
 
 except KeyboardInterrupt:
-    print('\033[3mkeyboard interrupt\033[0m')
+    print('\033[3m\b keyboard interrupt\033[0m')
 
 except EOFError:
-    print('\033[3meof\033[0m')
+    print('\033[3m\b eof\033[0m')
     exit()
