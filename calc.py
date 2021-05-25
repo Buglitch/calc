@@ -25,6 +25,10 @@ false=False
 true=True
 none=None
 null=None
+j=1j
+i=j
+infi=infj
+nani=nanj
 
 for n in dir(math):
     if "__" in n:
@@ -44,6 +48,7 @@ try:
             or calc == "q"):
             exit()
         try:
+            calc = re.sub(r'([0-9]+)i', r'\1j', calc)
             try:
                 res = eval(calc)
             except Exception:
