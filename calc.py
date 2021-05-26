@@ -41,6 +41,10 @@ for n in dir(math):
     elif n in dir(cmath) and isinstance(getattr(math, n), types.BuiltinFunctionType):
         globals()[n] = lambda *x, n=n: (lambda r=getattr(cmath, n)(*x): r.real if r.imag == 0 else r)()
 
+del k
+del v
+del n
+
 try:
     while True:
         calc = input("\033[95m> \033[39m").strip()
@@ -54,6 +58,8 @@ try:
             exit()
         try:
             calc = re.sub(r'([0-9]+)i', r'\1j', calc)
+            calc = calc.replace('decimal.', 'decimals.')
+            calc = calc.replace('random.', 'randoms.')
             try:
                 res = eval(calc)
             except Exception:
@@ -81,7 +87,10 @@ try:
                         res = floor(res)
 
                 if isinstance(res, int):
-                    print("dec: {0:d}\thex: 0x{0:X}".format(floor(res)))
+                    if res != True and res != False:
+                        print("dec: {0:d}\thex: 0x{0:X}".format(floor(res)))
+                    else:
+                        print("dec: {0:d}\thex: 0x{0:X}\tbool: {1}".format(floor(res), bool(floor(res))))
                     continue
 
                 if isinstance(res, types.BuiltinFunctionType):
