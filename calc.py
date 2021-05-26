@@ -101,7 +101,7 @@ try:
                     print("null")
                     continue
 
-                print("{0}: {1}".format(res.__class__.__name__, res))
+                print("{0}: {1}".format(res.__class__.__name__.lower(), res))
                 continue
 
         except Exception as err:
