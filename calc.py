@@ -4,6 +4,7 @@ import os
 import re
 import readline
 import types
+import sys
 
 import numbers
 import math
@@ -49,6 +50,11 @@ try:
     while True:
         calc = input("\033[95m> \033[39m").strip()
         if calc == "" or calc[0] == "#":
+            if re.match("^#[0-9A-Fa-f]{6}$", calc):
+                rgb = tuple(int(calc[1:][i:i+2], 16) for i in (0, 2, 4))
+                if re.match("(truecolor|24bit|unknown)", os.environ.get("COLORTERM") if os.environ.get("COLORTERM") else "unknown"):
+                    print("color: \x1b[48;2;{0[0]};{0[1]};{0[2]}m   \033[0m".format(rgb), end="\t")
+                print("tuple: {0}\t rgb: {1[0]}% {1[1]}% {1[2]}%".format(rgb, tuple(int((i / 0xff) * 100) for i in rgb)))
             continue
         elif (calc == "exit()"
             or calc == "exit"
@@ -73,7 +79,7 @@ try:
                         print("complex: {0} + {1}i".format(res.real, res.imag))
                         continue
                     else:
-                        res = res.real 
+                        res = res.real
 
                 if isinstance(res, bool):
                     print("bool: {0}\thex: 0x{0:X}".format(res).lower())
@@ -109,7 +115,7 @@ try:
             if re.match(func_r + r"$", calc) or re.match(func_r + r" ", calc):
                 ret = os.system(calc)
                 if ret != 0:
-                    print("ret: {0:d}\thex: 0x{0:X}".format(ret))
+                    print("ret: {0:d}\tsig: {1:d}\thex: {0:02X} {1:02X}".format(ret // 0x100, ret % 0x100))
             else:
                 print("error: {0}".format(err))
 
